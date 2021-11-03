@@ -1,0 +1,1925 @@
+# <#>Spring Boot<> SpeedSheet
+<b>What you need, faster.<>
+
+
+# Unsorted
+
+
+## Add Spring.Help
+
+
+
+# Summary
+
+
+
+### What is it?
+
+A Spring based framework for creating simple, portable, fast and flexible Java applications. It is a suite of pre-selected frameworks and technologies configured together to reduce boiler plate.
+
+
+
+### Default - Servlet
+
+Tomcat
+
+
+
+# Application
+@
+@ Main Class, application-only
+
+
+## Application Class - Sample
+
+<cb>import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.ComponentScan;
+
+\@SpringBootApplication
+\@ComponentScan({"<v>com.application.package1...<>", <v>...<>})
+public class <v>Application<> {
+	
+	public final static Logger logger = LogManager.getLogger(<v>Application<>.class);
+	
+	public static void main(String[] args) {
+		
+		SpringApplication.run(<v>Application<>.class, args);
+		
+		logger.info ("The app runs 👍");
+	}
+}<>
+@
+@ Basics
+
+
+
+## Application - Details
+
+
+### Application Class - Define
+
+<cb>@SpringBootApplication<>
+
+<cb>SpringApplication.run(<v>Application<>.class, args);<>
+
+Full Example:
+
+<cb>import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+\@SpringBootApplication
+public class <v>Application<> {
+
+	public static void main(String[] args) {
+		
+		SpringApplication.run(<v>Application<>.class, args);
+	}
+}
+<>
+
+Defines Spring startup class.
+@
+@ New, Create, Run, Startup
+@ @SpringBootApplication, SpringApplication.run
+
+
+
+### Application Class - Component Scan
+
+<cb>@ComponentScan({<v>package1<>, <v>package2<>, <v>...<>})<>
+
+Full Example:
+
+<cb>import org.springframework.context.annotation.ComponentScan;
+
+\@ComponentScan({"<v>com.application<><v>...<>", "<v>com.application<><v>...<>", <v>...<>})
+public class <v>Application<> {
+	<v>...<><>
+
+
+Defines the packages Spring needs to scan to find Spring managed classes.
+
+Default:
+Spring Boot scans for classes in and under the @SpringBootApplication class package by default.
+@
+@ Components, @ComponentScan
+
+
+
+# Configuration File
+@
+@ Settings
+
+
+
+### Configuration Directory
+
+Locations Searched:
+
+	<c>/config<> in the Current Directory
+	Current Directory
+	<c>/config> in the Class Path
+	Class Path Root Directory
+
+
+From Project Root:
+
+<cb>/config<>
+
+In Class Path:
+
+<cb>/src/main/resources<>
+
+
+Spring Boot scans these directories looking for configuration files.
+@
+@ Seach, Directory, Path, Files, Folder
+
+
+
+### Configuration Directory - Set - Command Line Parameter
+
+Parameter:
+
+<cb>spring.config.location<>
+
+Command Line:
+
+<cb>-Dspring.config.location=<v>config_directory_path<><>
+
+
+Set from the command line.
+@
+@ spring.config.location
+@ set, by location, folder
+
+
+
+### Configuration Directory - Set - Environment Variable
+
+<cb>SPRING_CONFIG_LOCATION<>
+
+Bash:
+
+<cb>export SPRING_CONFIG_LOCATION=<v>config_directory_path<><>
+@
+@ SPRING_CONFIG_LOCATION
+@ set, by location, folder
+
+
+
+### Configuration File Name
+
+<cb>application.properties<>
+
+Using Profile:
+
+<cb>application-<v>profile<>.properties<>
+@
+@ application.properties
+
+
+
+### Configuration File Name - YAML
+
+<cb>application.yaml<>
+
+Using Profile:
+
+<cb>application-<v>profile<>.yaml<>
+
+
+
+### Configuration File Location - Set - Command Line Parameter
+
+Parameter:
+
+<cb>spring.config.name<>
+
+Command Line:
+
+<cb>--spring.config.name=<v>config_file_path<><>
+
+Or
+
+<cb>-Dspring.config.name=<v>config_file_path<><>
+
+
+Set from the command line.
+@
+@ Set, By
+
+
+
+# Configuration Profiles
+
+
+
+### Profiles - Get
+
+<cb>@Autowired
+ConfigurableEnvironment <v>environment<>;
+
+<v>environment<>.getActiveProfiles();<>
+
+
+Returns the currently active profiles.
+@
+@ .getActiveProfiles()
+
+
+
+### Profile - Set - Command Line Parameter
+
+Parameter:
+
+<cb>spring.profiles.active<>
+
+Command Line:
+
+<cb>--spring.profiles.active=<v>profile-1<><>
+
+<cb>--spring.profiles.active=<v>profile-1<>,<v>profile-2<>,<v>...<><>
+
+Or
+
+<cb>-Dspring.profiles.active=<v>profile-1<><>
+@
+@ spring.profiles.active
+
+
+
+### Profile - Set - In applications.properties
+
+Parameter:
+
+<cb>spring.profiles.active<>
+
+Set:
+
+<cb>spring.profiles.active=<v>profile-1<><>
+
+<cb>spring.profiles.active=<v>profile-1<>,<v>profile-2<>,<v>...<><>
+@
+@ applications.properties, spring.profiles.active
+
+
+
+### Profile - Set - In Code
+
+<cb>servletContext.setInitParameter("spring.profiles.active", "<v>profile-name<>");<>
+
+Or
+
+<cb>@Autowired
+ConfigurableEnvironment <v>environment<>;
+
+<v>environment<>.setActiveProfiles("<v>profile-name<>");<>
+@
+@ .setActiveProfiles(), ServletContext.setInitParameter()
+@ Programmatically, through
+
+
+
+### Profile - Set - With Environment Variable
+
+<cb>SPRING_PROFILES_ACTIVE<>
+
+Bash:
+
+<cb>export SPRING_PROFILES_ACTIVE=<v>profile-name<><>
+
+
+
+### Profile - Include Class On Profile
+
+<cb>@Profile ("<v>profile-name<>")<>
+
+<cb>@Profile ("<v>profile-name<> & <v>profile-2-name<>")<>
+
+Import: <!>(confirm)<>
+
+<cb>import org.springframework.context.annotation.Profile;<>
+
+
+Executes class only when the given profile is active.
+
+
+Example:
+
+<cb><!>Example please<><>
+@
+@ Apply Active Profile, Enable
+
+
+
+### Profile - Exclude Class On Profile
+
+<cb>@Profile ("!<v>profile-name<>")<>
+
+Import:
+
+<cb>import org.springframework.context.annotation.Profile;<>
+
+
+Executes class given profile is NOT active.
+
+
+Example:
+
+<cb><!>Example please<><>
+@
+@ Apply Active Profile, disable
+
+
+
+# Configuration Properties
+@
+@ Settings
+
+
+
+### Property - Get - In Code
+
+<cb>@Inject
+private Environment <v>environment<>;
+
+String <v>propertyValue1<> = <v>environment<>.getProperty("<v>property-name<>");<>
+@
+@ Programmatically
+
+
+
+### Property - Read - To Method Parameter
+
+<cb>@Value("${<v>property-name<>}")<>
+
+Import:
+
+<cb>import org.springframework.beans.factory.annotation.Value;<>
+
+
+Reads the value from the property file and assigns it to the argument.
+
+
+Default:
+
+	Throws: <c>java.lang.IllegalArgumentException<>
+
+
+<cb>public void <v>method1<>(@Value("${<v>property-name<>}") String <v>parameter1<>) {
+	<v>...<>
+}<>
+@
+@ get
+
+
+
+### Property - Read - To Variable
+
+<cb>@Value("${<v>property-name<>}")<>
+
+Import:
+
+<cb>import org.springframework.beans.factory.annotation.Value;<>
+
+
+Reads the value from the property file and assigns it to the variable.
+
+
+Default:
+
+	Throws: <c>java.lang.IllegalArgumentException<>
+
+
+<cb>public class <v>Class1<>{
+
+	@Value("${<v>property-name<>}")
+	String <v>property1<>
+}<>
+@
+@ get
+
+
+
+### Property - Read - Default Value
+
+<cb>@Value("${<v>property-name<>:<v>default-value<>}")<>
+
+Import:
+
+<cb>import org.springframework.beans.factory.annotation.Value;<>
+
+Boolean:
+
+<cb>public class <v>Class1<>{
+
+	@Value("${<v>property-name<>:<v>true<>}")
+	Boolean <v>property1<>
+}<>
+
+Integer:
+
+<cb>public class <v>Class1<>{
+
+	@Value("${<v>property-name<>:<v>123<>}")
+	int <v>property1<>
+}<>
+
+String:
+
+<cb>public class <v>Class1<>{
+
+	@Value("${<v>property-name<>:}")			<#>// 1.<>
+	String <v>property1<>
+}<>
+
+<cb>public class <v>Class1<>{
+
+	@Value("${<v>property-name<>:<v>string<>}")	<#>// 2.<>
+	String <v>property1<>
+}<>
+
+1.  -  Defaults to an empty string.
+
+2.  -  Quotes are not needed
+@
+@ get, with
+
+
+### Property - Read - Default Value - Boolean
+
+<cb>@Value("${<v>property-name<>:true}")<>
+
+<cb>@Value("${<v>property-name<>:false}")<>
+
+Import:
+
+<cb>import org.springframework.beans.factory.annotation.Value;<>
+
+
+<cb>public class <v>Class1<>{
+
+	@Value("${<v>property-name<>:true}")
+	Boolean <v>property1<>;
+}<>
+@
+@ get, with
+
+
+### Property - Read - Default Value - Integer
+
+<cb>@Value("${<v>property-name<>:#{<v>int-value<>}}")<>
+
+<cb>@Value("${<v>property-name<>:#{<v>101<>}}")<>
+
+
+<cb>public class <v>Class1<>{
+
+	@Value("${<v>property-name<>:#{42}}")
+	int <v>property1<>;
+}<>
+@
+@ get, with
+
+
+
+### Property - Set - In Code
+
+<cb>servletContext.setInitParameter("<v>property-name<>, "<v>value<>");<>
+
+<cb>@Autowired
+ServletContext <v>servletContext<>;
+
+<v>servletContext<>.setInitParameter("<v>property-name<>, "<v>value<>");<>
+@
+@ ServletContext.setInitParameter, programmatically, through
+
+
+
+
+# Component Configuration
+@
+@ Beans, Components
+
+
+
+## Autowire / Inject
+
+
+
+## Explicit Configuration
+
+
+## Inheritance / Qualifier
+
+
+
+# Controller
+@
+@ cont-only, controller-only, controllers-only
+
+
+
+### Controller - Web Controller - Define
+
+<cb>@Controller<>
+
+Imports:
+
+<cb>import org.springframework.stereotype.Controller;<>
+
+
+Example:
+
+<cb>import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;<>
+
+<cb>@Controller
+\@RequestMapping("<v>/user<>")
+public class <v>UserController<> {
+	<v>...<>
+}<>
+@
+@ Create, New, url, @Controller
+
+
+
+### Controller - REST Controller - Define
+
+<cb>@RestController<>
+
+Imports:
+
+<cb>import org.springframework.web.bind.annotation.RestController;<>
+
+
+Example:
+
+<cb>import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;<>
+
+<cb>@RestController
+\@RequestMapping("<v>/api/user<>")
+public class <v>UserApiController<> {
+	<v>...<>
+}<>
+@
+@ Create, New, url, @RestController
+
+
+
+### Controller - Map URL Path
+
+<cb>@RequestMapping("<v>url_path<>")<>
+
+Imports:
+
+<cb>import org.springframework.web.bind.annotation.RequestMapping;<>
+
+
+Example:
+
+<cb>import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;<>
+
+<cb>@RestController
+\@RequestMapping("<v>/api/user<>")
+public class <v>UserApiController<> {
+	<v>...<>
+}<>
+@
+@ Create, New, url, @RequestMapping
+
+
+
+### Controller - Controller Advice
+
+<!>Details!<>
+
+
+
+### Controller Action - Delete
+
+<cb>@DeleteMapping()<>
+
+<cb>@DeleteMapping("<v>url_path<>")<>
+
+Import:
+
+<cb>import org.springframework.web.bind.annotation.DeleteMapping;<>
+@
+@ @DeleteMapping
+
+
+
+
+### Controller Action - Get
+
+<cb>@GetMapping()<>
+
+<cb>@GetMapping("<v>url_path<>")<>
+
+Import:
+
+<cb>import org.springframework.web.bind.annotation.GetMapping;<>
+
+
+Example:
+
+<cb>import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.http.ResponseEntity;<>
+
+<cb>@GetMapping("<v>/health<>")
+public ResponseEntity\<String> <v>health<>() {
+	return new ResponseEntity\<>("The system is up 👍", HttpStatus.OK);
+}<>
+@
+@ @GetMapping
+
+
+
+### Controller Action - Post
+
+<cb>@PostMapping()<>
+
+<cb>@PostMapping("<v>url_path<>")<>
+
+Import:
+
+<cb>import org.springframework.web.bind.annotation.PostMapping;<>
+
+
+Example:
+
+<cb>import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.http.ResponseEntity;<>
+
+<cb>@PostMapping("<v>create<>")
+public ResponseEntity\<String> <v>create<>(@RequestBody String body) {
+	return new ResponseEntity\<>("Sent " + body, HttpStatus.OK);
+}<>
+@
+@ @PostMapping
+
+
+
+### Controller Action - Put
+
+<cb>@PutMapping()<>
+
+<cb>@PutMapping("<v>url_path<>")<>
+
+Import:
+
+<cb>import org.springframework.web.bind.annotation.PutMapping;<>
+
+
+Example:
+
+<cb>import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.http.ResponseEntity;<>
+
+<cb>@PutMapping("<v>update<>")
+public ResponseEntity\<String> <v>create<>(@RequestBody String body) {
+	return new ResponseEntity\<>("Sent " + body, HttpStatus.OK);
+}<>
+@
+@ @PutMapping
+
+
+
+### Controller Request - Body
+@
+@ input
+
+
+
+### Controller Request - Body Parameter
+
+<cb>@RequestBody <v>Type<> <v>value<><>
+
+Full Method:
+
+<cb>public ResponseEntity\<<v>...<>> <v>requestMethod<>(@RequestBody <v>Type<> <v>value<>) {
+	<v>...<>
+}<>
+
+Import:
+
+<cb>import org.springframework.web.bind.annotation.RequestBody;<>
+@
+@ post, put, @RequestBody
+
+
+
+### Controller Request - Path Parameter
+
+<cb>@PathVariable <v>Type<> <v>name<><>
+
+Full Method:
+
+<cb>@<v>GetMapping<>("<v>...<>/{<v>name<>}/<v>...<>")
+public ResponseEntity\<<v>...<>> <v>requestMethod<>(@PathVariable <v>Type<> <v>name<>) {	<#>// #1<>
+	<v>...<>
+}<>
+
+Named Parameter:
+
+<cb>@PathVariable("<v>name<>") <v>Type<> <v>parameter<><>
+
+Import:
+
+<cb>import org.springframework.web.bind.annotation.PathVariable;<>
+
+\#1  <s>-<>  Sets the variable to the url path parameter of the same name.
+@
+@ variable, @PathVariable
+
+
+
+### Controller Request - Url Parameter
+
+<cb>@RequestParam <v>Type<> <v>name<><>
+
+URL:
+
+<cb><v>...<>/<v>path<>&<v>name<>=<v>value<><>
+
+Full Method:
+
+<cb>public ResponseEntity\<<v>...<>> <v>requestMethod<>(@RequestParam <v>Type<> <v>name<>) {	<#>// #1<>
+	<v>...<>
+}<>
+
+Named Parameter:
+
+<cb>@RequestParam(name = "<v>param_name<>") <v>Type<> <v>param1<><>
+
+Multiple Parameters:
+
+<cb>public ResponseEntity\<<v>...<>> <v>requestMethod<>(@RequestParam <v>String<> <v>param1<>, @RequestParam <v>int<> <v>param2<>, <v>...<>) {
+	<v>...<>
+}<>
+
+Import:
+
+<cb>import org.springframework.web.bind.annotation.RequestParam;<>
+
+
+\#1  <s>-<>  Sets the variable to the url parameter of the same name.
+
+\#2  <s>-<>  Use <c>name = <> to target a url parameter that has a different name to the variable.
+@
+@ input, get, @RequestParam
+
+
+
+### Controller Response - Status Code
+
+<cb>public ResponseEntity\<<v>Type<>> <v>controllerAction<>() {
+	return new ResponseEntity\<>(<v>responseItem<>", HttpStatus.<u>Status<>);
+}<>
+
+Import:
+
+<cb><cb>import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;>
+
+
+Example:
+
+<cb>import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;<>
+
+<cb>@GetMapping()
+public ResponseEntity\<String> <v>testStringResponse<>() {
+	return new ResponseEntity\<>("<v>This is the text response.<>", HttpStatus.OK);
+}<>
+
+
+
+### Controller Response - String
+
+<cb>public ResponseEntity\<String> <v>controllerAction<>() {
+	<v>...<>
+}<>
+
+Import:
+
+<cb>import org.springframework.http.ResponseEntity;<>
+
+
+Example:
+
+<cb>import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;<>
+
+<cb>@GetMapping()
+public ResponseEntity\<String> <v>testStringResponse<>() {
+	return new ResponseEntity\<>("<v>This is the text response.<>", HttpStatus.OK);
+}<>
+
+
+
+## Controller Response - Response Status Codes
+
+Import:
+
+<cb>import org.springframework.http.HttpStatus;<>
+
+
+
+### Response - OK
+
+<cb>HttpStatus.OK<>
+
+
+
+### Response - Internal Server Error
+
+<cb>HttpStatus.INTERNAL_SERVER_ERROR<>
+
+
+
+### Response - Bad Request
+
+<cb>HttpStatus.BAD_REQUEST<>
+@
+@ validation
+
+
+
+### Response - Not Found
+
+<cb>HttpStatus.NOT_FOUND<>
+@
+@ validation
+
+
+
+# Conversion - JSON
+@
+@ Marshalling
+
+
+
+### JSON - Property - Map To JSON Name
+
+<cb>@JsonProperty("<v>json_name<>")<>
+
+<cb>@JsonProperty("<v>json_name<>")
+public void set<v>PropertyName<>(<v>Type<> value) {
+	<v>...<><>
+
+Import:
+
+<cb>import com.fasterxml.jackson.annotation.JsonProperty;<>
+
+
+Place before setter method.
+Works for marshalling and unmarshalling.
+@
+@ Set
+
+
+
+
+
+# Logging
+@
+@ log-only, logging-only
+
+
+
+### Logging - Configuration File
+
+Preferred:
+
+<cb>logback-spring.xml<>
+
+Acceptable:
+
+<cb>logback.xml<>
+
+Place in class path.
+@
+@ Settings, Properties
+
+
+### Logging - Configuration Settings
+
+In:
+
+<cb>application.properties<>
+
+<!>Get properties.<>
+@
+@ Settings, Properties
+
+
+
+### Logging - Basics
+
+<cb>public final static Logger logger = LogManager.getLogger(<v>ClassName<>.class);<>
+
+Imports:
+
+<cb>import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;<>
+
+
+
+Example:
+
+<cb>import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+public class <v>Component1<> {
+
+	public final static Logger logger = LogManager.getLogger(<v>Component1<>.class);
+}<>
+@
+@ Source Code, Example, Template
+
+
+
+### Logging - Log Exception
+
+<cb>logger.error(<v>message<>, <v>exception1<>);<>
+
+
+
+# Repository
+@
+@ rep-only, repository-only, repositories-only
+
+
+
+### Repository - Define
+
+<cb>public interface <v>TargetClassRepository<> extends JpaRepository\<<v>TargetClass<>, <v>IdType<>>{
+
+}<>
+@
+@ create, new
+
+
+
+### Repository - Lock
+
+<cb>@Lock(LockModeType.PESSIMISTIC_WRITE)
+public <v>...<> <v>retrieveMethod<>() {
+	<v>...<>
+}<>
+
+
+Apply to the method needing the lock.
+
+
+
+### Repository - Query
+
+<cb>public interface <v>TargetClassRepository<> 
+
+	String <v>QUERY_STRING<> = "SELECT <v>item<> From <v>Item<> <v>item<> WHERE <v>property1<> = :<v>queryParam1<> <v>...<>";
+
+	@Query(<v>QUERY_STRING<>)
+	public List\<<v>Item<>> <v>retrieveMethod<>(@Param ("<v>queryParam1<>") <v>Type<> <v>parameter<>, <v>...<>);<>
+@
+@ Custom, Group By, Where
+
+
+
+### Property - To DB String
+
+<cb>@convert<>
+
+<cb>@Convert(converter = <v>TypeConverter<>.class)
+private <v>Type<> <v>property1<>;<>
+
+Import:
+
+<cb>import javax.persistence.Convert;<>
+
+Converter:
+
+<cb>public class <v>TypeConverter<> implements AttributeConverter\<<v>Type<>, String> {
+
+	@Override
+	public String convertToDatabaseColumn(<v>Type<> value) {
+
+		return <v>toStringConvertion<>(value);
+	}
+
+	@Override
+	public <v>Type<> convertToEntityAttribute(String value) {
+
+		return <v>toTypeConversion<>(value);
+	}
+}<>
+
+Import:
+
+<cb>import javax.persistence.AttributeConverter;<>
+
+
+
+## Query
+
+
+
+
+## Transaction
+
+
+
+## Transactiion
+
+
+
+# Validations
+
+DecimalMax
+DecimalMin
+Digits
+Email
+Future
+FutureOrPresent
+Max
+Min
+Negative
+NegativeOrZero
+NotBlank
+NotEmpty
+NotNull
+Null
+Past
+PastOrPresent
+Pattern
+Positive
+PositiveOrZero
+
+Import:
+
+<cb>import javax.validation.constraints.*;<>
+
+
+
+# Entities
+
+
+
+## Marshal / Unmashal
+
+
+
+## Validation
+
+
+
+# Build
+
+
+## Build - Packages
+
+
+### Package - Spring Boot
+
+<cb>spring-boot-starter-web<>
+
+Gradle:
+
+<cb>compile group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: '<v>version<>'<>
+
+
+Maven Repository:
+<l>https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-web<>
+
+
+Required for Spring Boot applications.
+@
+@ spring-boot-starter-web
+
+
+
+### Package - Spring Boot Testing
+
+<cb>spring-boot-starter-test<>
+
+Gradle:
+
+<cb>testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: '<v>version<>'<>
+
+
+Maven Repository:
+<l>https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-test<>
+
+
+Required for Spring Boot applications.
+@
+@ spring-boot-starter-web
+
+
+
+### Package - Spring Actuator
+
+<cb>spring-boot-starter-actuator<>
+
+Gradle:
+
+<cb>compile group: 'org.springframework.boot', name: 'spring-boot-starter-actuator', version: '<v>version<>'<>
+
+
+Maven Repository:
+<l>https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-actuator<>
+
+
+#### Package - Spring Actuator - Configure
+
+<c>application.properties<>:
+
+<cb>management.endpoints.web.exposure.include=*<>
+
+
+
+#### Package - Spring Actuator - Configure - Enable Shutdown By Url
+
+<cb>management.endpoint.shutdown.enabled=true
+endpoints.shutdown.enabled=true<>
+
+
+
+#### Spring Actuator - Default Base Url
+
+<cb>GET		https://<v>url<>/actuator<>
+
+
+
+#### Spring Actuator - Application Health Url
+
+<cb>GET		https://<v>url<>/actuator/health<>
+
+
+
+#### Spring Actuator - Application Info Url
+
+<cb>GET		https://<v>url<>/actuator/info<>
+
+
+
+#### Spring Actuator - Set Base Urs
+
+Add Application Property:
+
+<cb>management.endpoints.web.base-path=<v>/new/base/path<><>
+@
+@ End Point, path
+
+
+
+#### Spring Actuator - Shut Down Url
+
+<cb>POST	https://<v>url<>/actuator/shutdown<>
+
+
+Must be enabled.
+
+
+
+#### Reference - End Point List
+
+Official Documentation:
+<l>https://docs.spring.io/spring-boot/docs/current/reference/html/production-ready-features.html#production-ready-endpoints<>
+
+
+
+# How To
+
+
+
+### Application - Gradle - Compile
+
+<cb>gradle build<>
+
+
+
+### Application - Gradle - Run
+
+<cb>gradle bootRun<>
+
+
+
+### ApplicationContext - Get
+
+<cb>ApplicationContext <cb>context<> = SpringApplication.run (<v>Application<>.class, args);<>
+
+
+
+
+### Bean - Instance - Get
+
+<cb>ApplicationContext <v>context<> = SpringApplication.run (<v>Application<>.class, args);
+
+<v>Class1<> <v>item1<> = context.getBean("<v>ClassName<>");
+<v>Class2<> <v>item2<> = context.getBean(<v>Class2<>.class);<>
+@
+@ In Code, Through, Programmatically
+
+
+
+### Content Type - Set
+
+On Controller Class (<!>controller method too?<>):
+
+<c>text/html<>:
+
+@RequestMapping(produces=MediaType.TEXT_HTML_VALUE)
+
+<c>text/plain<>:
+
+@RequestMapping(produces=MediaType.TEXT_PLAIN_VALUE)
+
+
+
+### HTML
+
+See: Static Content
+
+
+
+### HTTPS - Enable
+
+Create Keystore, Certificate
+
+	See: Keytool.Help
+
+Copy Keystore To Resources Folder
+
+Configure Properties
+
+<cb>server.port=8443
+
+security.require-ssl=true
+server.ssl.key-store-type=PKCS12
+server.ssl.key-store=classpath:<v>keystore_file.p12<>
+server.ssl.key-store-password=<v>keystore_password<>
+server.ssl.key-alias=<v>keystore_alias<><>
+
+Open
+
+<cb><l>https://localhost:8443<><>
+
+
+
+### Inject - Inheritance
+
+Define Subclass:
+
+<cb>@Qualifier ("<v>qualifier_name<>")
+class <v>...<> implements <v>BaseType<> {
+	<v>...<>
+}<>
+
+
+Inject Subclass:
+
+<cb>@Inject
+\@Qualifier ("<v>qualifier_name<>")
+<v>BaseType<> <v>item1<>;<>
+@
+@ @Qualifier, @Qualified, Class, Subclass, Inheritance, Base Class
+
+
+
+### Json - Convert From
+
+<cb>@JsonValue<>
+
+
+Example:
+
+<cb>class <v>SomeClass<> {
+
+\@JsonValue
+public String <v>actualJsonValue<>;<>
+
+
+
+### Json - Convert To
+
+<cb>@JsonCreate<>
+
+
+Example:
+
+<cb>class <v>ConvertClass1<> {
+
+\@JsonCreator
+public static <v>TargetClass<> <v>convertMethod<> (String <v><!>json?-<>value<>) {
+	<v>conversion code...<>
+	return <v>convertedValue<>;
+}<>
+
+
+
+### JUnit 4 - Runner
+
+<cb>import org.springframework.test.context.junit4.SpringJUnit4ClassRunner.SpringJUnit4ClassRunner;
+
+\@RunWith(SpringJUnit4ClassRunner.class)<>
+@
+@ Unit Tests
+
+
+
+### JUnit 5 - Runner
+
+<cb>import org.springframework.test.context.junit.jupiter.SpringExtension;
+
+\@ExtendWith(SpringExtension.class)<>
+@
+@ Unit Tests
+
+
+
+Static Content - Directory
+
+Preferred:
+
+<cb>/public<>
+
+Or					
+
+<cb>/static<>
+
+Do not use <c>/src/main/java<>.
+
+
+
+### ServletContext - Get
+
+<cb>@Autowired
+ServletContext context;<>
+
+Import: <!>Confirm<>
+
+<cb>javax.servlet.ServletContext<>
+
+
+Best Practices:
+
+Use in component classes.
+Do not reference from the main application class.
+
+
+
+### Value Object - JPA - Declare As
+
+<cb>@Embeddable<>
+
+<cb>@Embeddable
+public class <v>ValueObjectClass1<> {
+	<v>...<>
+}<>
+
+
+Declares a class as a value object.
+
+
+
+### Value Object - JPA - Embed In Parent
+
+<cb>@Embedded<>
+
+<cb>@Embedded
+private <v>ValueObjectClass1<> <v>valueObject1<>;
+
+
+
+### Value Object - JPA - Embed In Parent - As ID Object
+
+<cb>@EmbeddedId<>
+
+<cb>@EmbeddedId
+private <v>ValueObjectClass1<> <v>valueObject1<>;<>
+@
+@ @EmbeddedId
+
+
+
+### Value Object - Json - Embed
+
+<cb>@JsonUnwrap
+private <v>ValueObjectClass1<> <v>valueObject1<>;<>
+
+
+
+### URLs - Log
+
+Add Configuration Class:
+
+<cb>import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.web.filter.CommonsRequestLoggingFilter;
+
+\@Configuration
+public class HttpRequestLoggerConfiguration {
+	
+	@Bean
+	public CommonsRequestLoggingFilter requestLoggingFilter() {
+		
+		CommonsRequestLoggingFilter loggingFilter = new CommonsRequestLoggingFilter();
+		
+		loggingFilter.setIncludeClientInfo(true);
+		loggingFilter.setIncludeQueryString(true);
+		loggingFilter.setIncludePayload(true);
+
+		return loggingFilter;
+	}
+}<>
+
+
+Add Application Property (application.properties):
+
+<cb>logging.level.org.springframework.web.filter.CommonsRequestLoggingFilter=DEBUG<>
+
+Add Application Property (application.yaml):
+
+<cb>logging.level.org.springframework.web.filter.CommonsRequestLoggingFilter: DEBUG<>
+
+
+Or Add Log File Property <!>Untested<>:
+
+<cb>\<logger name="org.springframework.web.filter.CommonsRequestLoggingFilter">
+	\<level value="DEBUG" />
+\</logger><>
+
+
+<!>Note: Tried with <c>INFO<> instead of <!>DEBUG<>. Couldn't get it to work.<>
+@
+@ http Requests
+
+
+
+### URLs - Log - Custom Class
+
+Define Class:
+
+<cb>import javax.servlet.http.HttpServletRequest;
+import org.springframework.web.filter.AbstractRequestLoggingFilter;
+
+import ua.core.utils.StringUtils;
+
+public class <v>CustomRequestLoggingFilter<> extends AbstractRequestLoggingFilter {
+
+    @Override
+    protected void beforeRequest(HttpServletRequest request, String message) {
+
+		if (isHealthCheck(request))
+			return;
+
+		this.logger.debug("Request: " + request.getMethod() + " " + request.getServletPath());
+    }
+
+	@Override
+	protected void afterRequest(HttpServletRequest request, String message) {
+		// Not logging after request completed.
+	}
+	
+	private boolean isHealthCheck(HttpServletRequest request) {
+		
+		return request.getServletPath().equals("/health");
+	}
+}<>
+
+
+
+Add Configuration Class:
+
+<cb>import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import <v>package.path<>.<v>CustomRequestLoggingFilter<>;
+
+\@Configuration
+public class HttpRequestLoggerConfiguration {
+	
+	@Bean
+	public <v>CustomRequestLoggingFilter<> requestLoggingFilter() {
+		return new <v>CustomRequestLoggingFilter<>();
+	}
+}<>
+
+
+Add Application Property (application.properties):
+
+<cb>logging.level.org.<v>package.path<>.<v>CustomRequestLoggingFilter<>=DEBUG<>
+
+Add Application Property (application.yaml):
+
+<cb>logging.level.org.<v>package.path<>.<v>CustomRequestLoggingFilter<>: DEBUG<>
+
+
+Or Add Log File Property <!>Untested<>:
+
+<cb>\<logger name="<v>package.path<>.<v>CustomRequestLoggingFilter<>">
+	\<level value="DEBUG" />
+\</logger><>
+@
+@ http Requests
+
+
+
+# Appendix - Annotations
+@ Reference, Index
+
+
+### @Autowired	
+
+<cb>@Autowired	<>
+
+Don't Use. Prefer @Inject
+Auto-inject the correct value on this variable.
+
+On: Class Instance Variables
+
+
+
+### @Bean
+
+<cb>@Bean<>
+
+Declares a bean. Must be added to the method that generates the bean. Spring executes the method and register's the return value as a bean. By default the bean name is the same as the method.
+Direct analog of the XML <bean/> element.
+
+On: Method
+
+
+
+### @Component
+
+<cb>@Component<>
+
+Defines a class to be managed by Spring.
+
+
+
+### @ComponentScan
+
+<cb>@ComponentScan<>
+
+Tells Spring to look in this package for other Spring components, configurations and servlets.
+
+On: Class
+
+
+
+### @Configuration
+
+<cb>@Configuration<>
+
+Tags the class as a source of bean definitions for the application context.
+
+On: Class
+
+
+
+### @Controller
+
+<cb>@Controller<>
+
+
+
+### @EnableWebMvc
+
+<cb>@EnableWebMvc<>
+
+Flags the application as a web application.
+It also activates key behaviours such as setting up a DispatcherServlet.
+
+On: Class
+
+
+
+### @Inject
+
+<cb>@Inject<>
+
+Auto-inject the correct value on this variable.
+
+On: Class Instance Variables
+
+
+
+### @Qualifier
+
+<cb>@Qualifier ("<v>qualifier_name<>")<>
+
+Import: <!>(confirm)<>
+
+<cb>import org.springframework.beans.factory.annotation.Qualifier;<>
+
+
+<cb>@Qualifier ("<v>qualifier_name<>")
+class ImplementingClass<>
+
+
+<cb>@Inject
+\@Qualifier ("<v>qualifier_name<>")
+<v>classProperty<><>
+
+
+<cb>@Inject
+\@Qualifier ("<v>qualifier_name<>")
+<v>methodParameter<><>
+
+
+
+### @Repository
+
+<cb>@Repository<>
+
+Extents @Component. Don't know what extras it includes. Maybe only to denote the component as a DA or repository component.
+
+
+
+### @RestController
+
+<cb>@RestController<>
+
+Defines a controller that returns raw data instead of a view.
+
+On: Class
+
+Equivalent to:
+
+<cb>@Controller
+\@ResponseBody<>
+
+
+
+### @Service
+
+<cb>@Service<>
+
+
+Same as @Component. Used only to denote the component as a service component to the developer.
+
+
+
+### @SpringBootApplication
+
+<cb>@SpringBootApplication<>
+
+
+Convenience annotation combining the following:
+
+<cb>@ComponentScan
+\@Configuration
+\@EnableAutoConfiguration
+\@EnableWebMvc				<#>// 1<><>
+
+On: Class
+
+
+1  -  If also has spring-webmvc in class path.
+
+
+
+### @SpringBootContext
+
+<cb>@SpringBootContext<>
+
+
+Create the whole application context before running.
+
+On: Class
+
+
+
+### @Value
+
+<cb>@Value<>
+
+
+Read property.
+
+
+
+### @WebMvcTest
+
+<cb>@WebMvcTest<>
+
+
+Create just the web layers of the application (as opposed to @SpringBootContext).
+
+On: Class
+
+
+
+# Appendix - Gradle
+
+
+
+# Appendix - Configuration Settings
+@
+@ Properties, application.properties, Set
+
+
+
+### Server - Port
+
+<cb>server.port = <v>port_number<><>
+
+
+### Sql - Log
+
+<cb>spring.jpa.show-sql = true<>
+@
+@ Show, Display, Print
+
+
+
+# Glossary
+
+
+
+## Acronyms
+
+
+
+### IoC
+Inversion of Control
+
+
+
+### MVC
+Model View Controller
+
+
+
+## Terms
+
+
+
+### ApplicationContext
+The Spring class that maintains all the Spring beans/components.
+
+This is a container that extends BeanFactory (supports Spring dependency injection, etc.). It adds some bells and whistles. It supports application events. (The name is a bit of a misnomer)
+
+Spring provides 3 implementations:
+
+- FileSystemXMLApplicationContext
+- ClassPathXmlApplicationContex
+- WebXmlApplicationContex
+@
+@ Application Context, Spring Context
+
+
+
+### Bean
+Beans are any java objects (POJO classes) that are created by the spring framework.
+
+These are created and maintained by ApplicationContext
+@
+@ Spring Bean
+
+
+
+### BeanFactory
+This is Springs base dependency injection container. It creates and instantiates beans with all the dependennt canfigurations. It also supports init-method and destroy-method settings. Spring supplies different implementations of this class. The most common is XmlBeanFactory which creates and configures beans from an XML File. This type is usually prefered on devices with limited resources (such as mobile phones).
+
+
+
+### Component
+Declares a class as a Spring bean, something to be instantiated and injected somewhere else. Spring scans all classes for @Component and registers them at startup.
+Annotation: @Component
+
+
+
+### Component - Controller
+Specialized component / Spring bean that it is a Web MVC controller and users web-specific tools and functions. DispatchServlet searches for @Controller classes and registers their @RequestMapping methods.
+Annotation: @Controller
+
+
+
+### Component - Repository
+Specialized component used for persistence.
+Annotation: @Repository
+
+
+
+### Component - Service
+Denotes a component to be used for external services. Doesn't add any real functionality to the standard @Component.
+Annotation: @Serice
+
+
+
+### Container
+A pool of beans created in memory. The container has an api to query the pool.
+
+
+
+### DispatcherServlet
+The Spring class that maps Http requests to Spring controller classes.
+
+It takes incoming URIs and connects them to the correct handlers (controller methods) and views (generally JSPs).
+@
+@ Dispatcher Servlet
+
+
+### Namespace
+As in the namespace 'test' in '/WEB-INF/test-servlet.xml'.
+This refers to the scope of an instance of Spring's DispatcherServlet. If the namespace is called test, spring looks for a file test-servlet.xml to as that dispatcher's context. This dispatch context will become a child of the root context.
+
+
+
+### Prototype
+Objects defined as prototypes create new instances every time one is requested. Prototype objects are lazy loaded.
+See also Singleton.
+
+
+
+### Repository Classes
+CrudRepository, JpaRepository, PagingAndSortingRepository
+
+
+
+### Repository - CrudRepository
+Provides mainly CRUD functions.
+
+
+
+### Repository - JpaRepository
+Provides some JPA-related methods such as flushing the persistence context, deleting records in a batch, query by example.
+Extends: CrudRepository, PagingAndSortingRepository.
+
+
+
+### Repository - RepositoryPagingAndSortingRepository
+Provides methods to do pagination and sorting records.
+Extends: CrudRepository
+
+
+
+
+### Service
+A class that uses spring for dependency injection.
+
+
+
+### Singleton
+Objects that are singletons are created once at the beginning of runtime. Only one instance of each object is created.
+See also Prototype.
+
+
+
+### Spring Boot
+A framework that allows applications to get up and running fast. It is an opinionated framework containing other Spring frameworks and an embedded tomcat container (by default).
+
+Doesn't generate code. Instead dynamically wires up beans and settings. Applies them to the application context.
+
+Dependency: spring-boot-starter-web
+
+Includes:	spring-boot-starter
+			spring-core
+			spring-mvc
+			spring-boot-starter-tomcat
+			jackson.
+
+
+
+### Spring Boot - Features
+Servlet container (embedded Tomcat or Jetty)
+Spring MVC standard beans if applicable (included automatically)
+Unified deployable jar (includes all jar dependencies)
+
+
+
+### Spring Boot Actuator
+Provides some managed services such as health, audits, beans, and more.
+
+<c>GET <v>url<>/actuator/health<>
+<c>POST <v>url<>/actuator/shutdown<>
+
+
+
+### Spring MVC
+This is primarily about the controller side of MVC. Controller classes  DispatchServlet.
+Dependency: spring-webmvc
+
+
+
+### Spring Thymeleaf
+This is a templating framework typically used to generate views in Spring MVC applications.
+
+
