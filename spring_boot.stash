@@ -1,5 +1,5 @@
 # <#>Spring Boot<> SpeedSheet
-<b>What you need, faster.<>
+<b>Find what you need, faster.<>
 
 
 # Unsorted
@@ -898,6 +898,11 @@ Works for marshalling and unmarshalling.
 # Logging
 @
 @ log-only, logging-only
+
+
+### Logging - Default Library
+
+<cb>log4j<>
 
 
 
