@@ -508,12 +508,87 @@ ServletContext <v>servletContext<>;
 
 ## Autowire / Inject
 
+<cb>@Inject<>
+
+Full Usage:
+
+<cb>import javax.inject.Inject;
+
+\@Inject
+<v>T<> <v>property<>;<>
+
+Equivalent To:
+
+<cb>import org.springframework.beans.factory.annotation.Autowired;
+
+\@Autowired
+<v>T<> <v>property<>;<>
+
+
+<c>@Autowired<> vs <c>@Inject<>:
+
+These are equivalent.
+\@Autowired is Spring Boots internal annotation for autowiring components.
+\@Inject is the Java standard way to autwire components.
+@
+@ @autowired, org.springframework.beans.factory.annotation.Autowired
+@ @inject, javax.inject.Inject
+
 
 
 ## Explicit Configuration
 
 
 ## Inheritance / Qualifier
+
+<cb>@Qualifier("<v>qualifier_name<>")<>
+
+Full Usage:
+
+<cb>import org.springframework.beans.factory.annotation.Qualifier;
+
+<#>// Define:<>
+
+\@Qualifier("<v>qualifier_name<>")
+class <v>QualifiedClass<> implements <v>BaseClass<> {
+	<v>...<>
+}
+
+<#>// Use:<>
+
+class <v>Class1<> {
+
+	@Inject
+	@Qualifier("<v>qualifier_name<>")
+	<v>BaseClass<> component;
+}<>
+
+
+Example:
+
+<cb>import javax.inject.Inject;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+\@RestController
+\@RequestMapping("<v>/api/user<>")
+public class <v>UserApiController<> {
+
+    @Inject
+    @Qualifier("<v>logged_service<>")
+    <v>UserService<> <v>service<>;
+
+    @GetMapping("{<v>id<>}")
+    public ResponseEntity\<<v>User<>> retrieve(@PathVariable int <v>id<>) {
+        <v>User<> <v>user<> = <v>...<>.retrieve(<v>id<>);
+        return new ResponseEntity(<v>user<>, HttpStatus.OK);
+    }
+}<>
+@
+@ @qualifier, org.springframework.beans.factory.annotation.Qualifier
 
 
 
@@ -527,23 +602,34 @@ ServletContext <v>servletContext<>;
 
 <cb>@Controller<>
 
-Imports:
+Full Usage:
 
-<cb>import org.springframework.stereotype.Controller;<>
+<cb>import org.springframework.stereotype.Controller;
+
+\@Controller
+public class <v>Controller1<> {
+	<v>...<>
+}<>
 
 
 Example:
 
 <cb>import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;<>
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 
-<cb>@Controller
+\@Controller
 \@RequestMapping("<v>/user<>")
 public class <v>UserController<> {
-	<v>...<>
+
+    @GetMapping("/")
+    public ResponseEntity\<String> health() {
+        return new ResponseEntity(<v>"User: Joe Smith"<>, HttpStatus.OK);
+    }
 }<>
 @
-@ Create, New, url, @Controller
+@ Create, New, url
+@ @Controller, org.springframework.stereotype.Controller
 
 
 
@@ -551,23 +637,37 @@ public class <v>UserController<> {
 
 <cb>@RestController<>
 
-Imports:
+Full Usage:
 
-<cb>import org.springframework.web.bind.annotation.RestController;<>
+<cb>import org.springframework.web.bind.annotation.RestController;
+
+\@RestController
+public class <v>Controller1<> {
+    <v>...<>
+}<>
+
+
+<c>@RestController<> is equivalent to <c>@Controller<> with <c>@ResponseBody<>.
 
 
 Example:
 
 <cb>import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;<>
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.GetMapping;
 
-<cb>@RestController
+\@RestController
 \@RequestMapping("<v>/api/user<>")
 public class <v>UserApiController<> {
-	<v>...<>
+
+    @GetMapping("/")
+    public ResponseEntity\<String> health() {
+        return new ResponseEntity(<v>"User: Joe Smith"<>, HttpStatus.OK);
+    }
 }<>
 @
-@ Create, New, url, @RestController
+@ Create, New, url
+@ @RestController, org.springframework.web.bind.annotation.RestController;
 
 
 
@@ -575,23 +675,35 @@ public class <v>UserApiController<> {
 
 <cb>@RequestMapping("<v>url_path<>")<>
 
-Imports:
-
-<cb>import org.springframework.web.bind.annotation.RequestMapping;<>
-
-
-Example:
+Full Usage:
 
 <cb>import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;<>
 
-<cb>@RestController
+\@RequestMapping("<v>url_path<>")
+public class <v>Controller1<> {
+    <v>...<>
+}<><>
+
+
+Defines the url path that will access the controller.
+
+
+<cb>import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.GetMapping;
+
+\@RestController
 \@RequestMapping("<v>/api/user<>")
 public class <v>UserApiController<> {
-	<v>...<>
+
+    @GetMapping("/")
+    public ResponseEntity\<String> health() {
+        return new ResponseEntity(<v>"User: Joe Smith"<>, HttpStatus.OK);
+    }
 }<>
 @
-@ Create, New, url, @RequestMapping
+@ Create, New, url
+@ @RequestMapping, org.springframework.web.bind.annotation.RequestMapping
 
 
 
@@ -603,96 +715,198 @@ public class <v>UserApiController<> {
 
 ### Controller Action - Delete
 
-<cb>@DeleteMapping()<>
+<cb>@DeleteMapping()
 
-<cb>@DeleteMapping("<v>url_path<>")<>
+\@DeleteMapping("<v>url_path<>")<>
 
-Import:
+Full Usage:
 
-<cb>import org.springframework.web.bind.annotation.DeleteMapping;<>
+<cb>import org.springframework.web.bind.annotation.DeleteMapping;
+
+public class <v>Controller1<> {
+    
+    @DeleteMapping("<v>url_path<>")
+    public ResponseEntitity\<Item> delete() {
+        <v>...<>
+    }
+}<>
+
+
+Triggers the delete method when the Delete HTTP action is sent.
+
+
+<cb>import javax.inject.Inject;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+\@RestController
+\@RequestMapping("<v>/api/user<>")
+public class <v>UserApiController<> {
+
+    @Inject
+    <v>UserService<> <v>service<>;
+
+	@DeleteMapping("{<v>id<>}")
+    public ResponseEntity\<String> delete(@PathVariable int <v>id<>) {
+        <v>userService<>.delete(<v>id<>);
+        return new ResponseEntity(<v>"User deleted."<>, HttpStatus.OK);
+    }
+}<>
 @
-@ @DeleteMapping
-
+@ command
+@ @DeleteMapping, org.springframework.web.bind.annotation.DeleteMapping
 
 
 
 ### Controller Action - Get
 
-<cb>@GetMapping()<>
+<cb>@GetMapping()
 
-<cb>@GetMapping("<v>url_path<>")<>
+\@GetMapping("<v>url_path<>")<>
 
-Import:
+Full Usage:
 
-<cb>import org.springframework.web.bind.annotation.GetMapping;<>
+<cb>import org.springframework.web.bind.annotation.GetMapping;
+
+public class <v>Controller1<> {
+    
+    @GetMapping("<v>url_path<>")
+    public ResponseEntitity\<<v>T<>> retrieve() {
+        <v>...<>
+    }
+}<>
 
 
-Example:
+Examples:
 
 <cb>import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.http.ResponseEntity;<>
 
-<cb>@GetMapping("<v>/health<>")
-public ResponseEntity\<String> <v>health<>() {
-	return new ResponseEntity\<>("The system is up 👍", HttpStatus.OK);
+\@RestController
+\@RequestMapping("<v>/<>")
+public class <v>ApplicationController<> {
+
+    @GetMapping("<v>/health<>")
+    public ResponseEntity\<String> health() {
+        return new ResponseEntity\<>("The system is up 👍", HttpStatus.OK);
+    }
+}<>
+
+<cb>import javax.inject.Inject;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+\@RestController
+\@RequestMapping("<v>/api/user<>")
+public class <v>UserApiController<> {
+
+    @Inject
+    <v>UserService<> <v>service<>;
+
+    @GetMapping("{<v>id<>}")
+    public ResponseEntity\<<v>User<>> retrieve(@PathVariable int <v>id<>) {
+        <v>User<> <v>user<> = <v>...<>.retrieve(<v>id<>);
+        return new ResponseEntity(<v>user<>, HttpStatus.OK);
+    }
 }<>
 @
-@ @GetMapping
+@ Command
+@ @GetMapping, org.springframework.web.bind.annotation.GetMapping
 
 
 
 ### Controller Action - Post
 
-<cb>@PostMapping()<>
+<cb>@PostMapping()
 
-<cb>@PostMapping("<v>url_path<>")<>
+\@PostMapping("<v>url_path<>")<>
 
-Import:
+Full Usage:
 
-<cb>import org.springframework.web.bind.annotation.PostMapping;<>
+<cb>import org.springframework.web.bind.annotation.PostMapping;
+
+public class <v>Controller1<> {
+
+    @PostMapping("<v>url_path<>")
+    public ResponseEntitity\<<v>T<>> update() {
+        <v>...<>
+    }
+}<>
 
 
 Example:
 
-<cb>import org.springframework.http.HttpStatus;
+<cb>import javax.inject.Inject;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.http.ResponseEntity;<>
 
-<cb>@PostMapping("<v>create<>")
-public ResponseEntity\<String> <v>create<>(@RequestBody String body) {
-	return new ResponseEntity\<>("Sent " + body, HttpStatus.OK);
+\@RestController
+\@RequestMapping("<v>/api/user<>")
+public class <v>UserApiController<> {
+
+    @Inject
+    <v>UserService<> <v>service<>;
+
+    @PostMapping("{<v>id<>}")
+    public ResponseEntity\<<v>User<>> update(@RequestBody <v>User<> <v>user<>) {
+        <v>User<> <v>updated<> = <v>service<>.update(<v>user<>);
+        return new ResponseEntity(<v>updated<>, HttpStatus.OK);
+    }
 }<>
 @
-@ @PostMapping
+@ command
+@ @PostMapping, org.springframework.web.bind.annotation.PostMapping
 
 
 
 ### Controller Action - Put
 
-<cb>@PutMapping()<>
+<cb>@PutMapping()
 
-<cb>@PutMapping("<v>url_path<>")<>
+\@PutMapping("<v>url_path<>")<>
 
-Import:
+Full Usage:
 
-<cb>import org.springframework.web.bind.annotation.PutMapping;<>
+<cb>import org.springframework.web.bind.annotation.PutMapping;
+
+public class <v>Controller1<> {
+
+    @PutMapping("<v>url_path<>")
+    public ResponseEntitity\<<v>T<>> update() {
+        <v>...<>
+    }
+}<>
 
 
 Example:
 
-<cb>import org.springframework.http.HttpStatus;
+<cb>import javax.inject.Inject;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.http.ResponseEntity;<>
 
-<cb>@PutMapping("<v>update<>")
-public ResponseEntity\<String> <v>create<>(@RequestBody String body) {
-	return new ResponseEntity\<>("Sent " + body, HttpStatus.OK);
+\@RestController
+\@RequestMapping("<v>/api/user<>")
+public class <v>UserApiController<> {
+
+    @Inject
+    <v>UserService<> <v>service<>;
+
+    @PutMapping("{<v>id<>}")
+    public ResponseEntity\<<v>User<>> update(@RequestBody <v>User<> <v>user<>) {
+        <v>User<> <v>updated<> = <v>service<>.update(<v>user<>);
+        return new ResponseEntity(<v>updated<>, HttpStatus.OK);
+    }
 }<>
 @
-@ @PutMapping
+@ command
+@ @PutMapping, org.springframework.web.bind.annotation.PutMapping
 
 
 
@@ -704,44 +918,80 @@ public ResponseEntity\<String> <v>create<>(@RequestBody String body) {
 
 ### Controller Request - Body Parameter
 
-<cb>@RequestBody <v>Type<> <v>value<><>
+<cb>@RequestBody <v>T<> <v>value<><>
 
 Full Method:
 
-<cb>public ResponseEntity\<<v>...<>> <v>requestMethod<>(@RequestBody <v>Type<> <v>value<>) {
+<cb>import org.springframework.web.bind.annotation.RequestBody;
+
+public ResponseEntity\<<v>...<>> <v>requestMethod<>(@RequestBody <v>T<> <v>value<>) {
 	<v>...<>
 }<>
 
-Import:
 
-<cb>import org.springframework.web.bind.annotation.RequestBody;<>
+Reads the body of the request and converts it into the type <c><v>T<><>.
+
+The default format for the body is json.
+
+
+Example:
+
+<cb>import javax.inject.Inject;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.PostMapping;
+
+\@RestController
+\@RequestMapping("<v>/api/user<>")
+public class <v>UserApiController<> {
+
+    @Inject
+    <v>UserService<> <v>service<>;
+
+    @PostMapping("{<v>id<>}")
+    public ResponseEntity\<<v>User<>> update(@RequestBody <v>User<> <v>user<>) {
+        <v>User<> <v>updated<> = <v>service<>.update(<v>user<>);
+        return new ResponseEntity(<v>updated<>, HttpStatus.OK);
+    }
+}<>
 @
-@ post, put, @RequestBody
+@ post, put
+@ @RequestBody, org.springframework.web.bind.annotation.RequestBody
 
 
 
 ### Controller Request - Path Parameter
 
-<cb>@PathVariable <v>Type<> <v>name<><>
+<cb>@PathVariable <v>T<> <v>name<>
+
+\@PathVariable("<v>path_name<>") <v>T<> <v>name<><>
 
 Full Method:
 
-<cb>@<v>GetMapping<>("<v>...<>/{<v>name<>}/<v>...<>")
-public ResponseEntity\<<v>...<>> <v>requestMethod<>(@PathVariable <v>Type<> <v>name<>) {	<#>// #1<>
+<cb>org.springframework.web.bind.annotation.PathVariable
+
+\@<v>GetMapping<>("{<v>name<>}")
+public ResponseEntity\<<v>...<>> <v>requestMethod<>(@PathVariable <v>T<> <v>name<>) {	<#>// #1<>
 	<v>...<>
 }<>
 
-Named Parameter:
+Explicitly Named Parameter:
 
-<cb>@PathVariable("<v>name<>") <v>Type<> <v>parameter<><>
+<cb>org.springframework.web.bind.annotation.PathVariable
 
-Import:
+\@<v>GetMapping<>("{<v>path_name<>}")
+public ResponseEntity\<<v>...<>> <v>requestMethod<>(@PathVariable("<v>path_name<>") <v>T<> <v>name<>) {	<#>// #1<>
+	<v>...<>
+}<>
 
-<cb>import org.springframework.web.bind.annotation.PathVariable;<>
+
+Reads the named parameter from the path mapping.
+Passes the value in to the variable of the same name.
 
 \#1  <s>-<>  Sets the variable to the url path parameter of the same name.
 @
-@ variable, @PathVariable
+@ variable, named parameter
+@ @PathVariable, org.springframework.web.bind.annotation.PathVariable
 
 
 
@@ -778,20 +1028,28 @@ Import:
 
 \#2  <s>-<>  Use <c>name = <> to target a url parameter that has a different name to the variable.
 @
-@ input, get, @RequestParam
+@ input, get
+@ @RequestParam, org.springframework.web.bind.annotation.RequestParam
 
 
 
 ### Controller Response - Status Code
 
-<cb>public ResponseEntity\<<v>Type<>> <v>controllerAction<>() {
-	return new ResponseEntity\<>(<v>responseItem<>", HttpStatus.<u>Status<>);
+<cb>HttpStatus.<v>Status<><>
+
+<cb>return new ResponseEntity\<>(<v>responseItem<>", HttpStatus.<v>Status<>)<>
+
+Full Usage:
+
+<cb>import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+
+public ResponseEntity\<<v>Type<>> <v>controllerAction<>() {
+	return new ResponseEntity\<>(<v>responseItem<>", HttpStatus.<v>Status<>);
 }<>
 
-Import:
 
-<cb><cb>import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;>
+Returns the http code for the given HttpStatus.
 
 
 Example:
@@ -804,18 +1062,105 @@ import org.springframework.web.bind.annotation.GetMapping;<>
 public ResponseEntity\<String> <v>testStringResponse<>() {
 	return new ResponseEntity\<>("<v>This is the text response.<>", HttpStatus.OK);
 }<>
+@
+@ HttpStatus, org.springframework.http.HttpStatus
+@ HttpStatus.OK
+@ ResponseEntity, org.springframework.http.ResponseEntity
+
+
+
+#### Http Response Code - OK
+
+<cb>HttpStatus.OK<>
+
+Full Usage:
+
+<cb>import org.springframework.http.HttpStatus;
+
+public ResponseEntity\<<v>T<>> <v>action<>() {
+    return new ResponseEntity\<<v>T<>>(<v>...<>, HttpStatus.OK);
+}<>
+
+
+Returns Http Code 200 / OK
+@
+@ HttpStatus, org.springframework.http.HttpStatus
+@ HttpStatus.OK, OK, 200
+
+
+
+#### Http Response Code - Internal Server Error
+
+<cb>HttpStatus.INTERNAL_SERVER_ERROR<>
+
+Full Usage:
+
+<cb>import org.springframework.http.HttpStatus;
+
+public ResponseEntity\<<v>T<>> <v>action<>() {
+    return new ResponseEntity\<<v>T<>>(<v>...<>, HttpStatus.INTERNAL_SERVER_ERROR);
+}<>
+
+
+Returns Http Code 500 / Internal Server Error
+@
+@ HttpStatus, org.springframework.http.HttpStatus
+@ HttpStatus.INTERNAL_SERVER_ERROR, INTERNAL_SERVER_ERROR, 500
+
+
+
+#### Http Response Code - Bad Request
+
+<cb>HttpStatus.BAD_REQUEST<>
+
+Full Usage:
+
+<cb>import org.springframework.http.HttpStatus;
+
+public ResponseEntity\<<v>T<>> <v>action<>() {
+    return new ResponseEntity\<<v>T<>>(<v>...<>, HttpStatus.BAD_REQUEST);
+}<>
+
+
+Returns Http Code 400 / Bad Request
+@
+@ HttpStatus, org.springframework.http.HttpStatus
+@ HttpStatus.BAD_REQUEST, BAD_REQUEST, 400
+@ validation
+
+
+
+#### Http Response Code - Not Found
+
+<cb>HttpStatus.NOT_FOUND<>
+
+Full Usage:
+
+<cb>import org.springframework.http.HttpStatus;
+
+public ResponseEntity\<<v>T<>> <v>controllerAction<>() {
+    return new ResponseEntity\<<v>T<>>(<v>...<>, HttpStatus.NOT_FOUND);
+}<>
+@
+@ HttpStatus, org.springframework.http.HttpStatus
+@ HttpStatus.NOT_FOUND, NOT_FOUND
+@ validation
 
 
 
 ### Controller Response - String
 
 <cb>public ResponseEntity\<String> <v>controllerAction<>() {
-	<v>...<>
+    <v>...<>
 }<>
 
-Import:
+Full Usage:
 
-<cb>import org.springframework.http.ResponseEntity;<>
+<cb>import org.springframework.http.ResponseEntity;
+
+public ResponseEntity\<String> <v>controllerAction<>() {
+    <v>...<>
+}<>
 
 
 Example:
@@ -826,44 +1171,10 @@ import org.springframework.web.bind.annotation.GetMapping;<>
 
 <cb>@GetMapping()
 public ResponseEntity\<String> <v>testStringResponse<>() {
-	return new ResponseEntity\<>("<v>This is the text response.<>", HttpStatus.OK);
+    return new ResponseEntity\<>("<v>This is the text response.<>", HttpStatus.OK);
 }<>
-
-
-
-## Controller Response - Response Status Codes
-
-Import:
-
-<cb>import org.springframework.http.HttpStatus;<>
-
-
-
-### Response - OK
-
-<cb>HttpStatus.OK<>
-
-
-
-### Response - Internal Server Error
-
-<cb>HttpStatus.INTERNAL_SERVER_ERROR<>
-
-
-
-### Response - Bad Request
-
-<cb>HttpStatus.BAD_REQUEST<>
 @
-@ validation
-
-
-
-### Response - Not Found
-
-<cb>HttpStatus.NOT_FOUND<>
-@
-@ validation
+@ ResponseEntity, org.springframework.http.ResponseEntity
 
 
 
@@ -1550,7 +1861,14 @@ Or Add Log File Property <!>Untested<>:
 
 ### @Autowired	
 
-<cb>@Autowired	<>
+<cb>@Autowired<>
+
+Full:
+
+<cb>import org.springframework.beans.factory.annotation.Autowired;
+
+\@Autowired
+<v>...<><>
 
 Don't Use. Prefer @Inject
 Auto-inject the correct value on this variable.
@@ -1619,6 +1937,13 @@ On: Class
 
 <cb>@Inject<>
 
+Full Usage:
+
+<cb>import javax.inject.Inject;
+
+\@Inject
+<v>...<><>
+
 Auto-inject the correct value on this variable.
 
 On: Class Instance Variables
@@ -1629,14 +1954,18 @@ On: Class Instance Variables
 
 <cb>@Qualifier ("<v>qualifier_name<>")<>
 
-Import: <!>(confirm)<>
+Full
 
-<cb>import org.springframework.beans.factory.annotation.Qualifier;<>
+<cb>import org.springframework.beans.factory.annotation.Qualifier;
 
+\@Qualifier ("<v>qualifier_name<>")<>
+
+Define:
 
 <cb>@Qualifier ("<v>qualifier_name<>")
-class ImplementingClass<>
+class <v>ImplementingClass<><>
 
+Use:
 
 <cb>@Inject
 \@Qualifier ("<v>qualifier_name<>")
@@ -1644,8 +1973,7 @@ class ImplementingClass<>
 
 
 <cb>@Inject
-\@Qualifier ("<v>qualifier_name<>")
-<v>methodParameter<><>
+\@Qualifier ("<v>qualifier_name<>") <v>methodParameter<><>
 
 
 
