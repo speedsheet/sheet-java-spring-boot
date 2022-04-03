@@ -960,18 +960,65 @@ public class <v>UserApiController<> {
 
 
 
+
+### Controller Request - Header - Value
+
+<cb>@RequestHeader(value = "<v>name<>") String <v>header<><>
+
+Full:
+
+<cb>import org.springframework.web.bind.annotation.RequestHeader;
+
+public ResponseEntity\<<v>...<>> <v>request<>(@RequestHeader(value = "<v>name<>") String <v>header<>) {
+    <v>...<>
+}<>
+
+
+Returns a single header.
+
+Returns <c>null<> if not present.
+@
+@ @RequestHeader, org.springframework.web.bind.annotation.RequestHeader
+@ input, get, by name, individual, headers
+
+
+
+### Controller Request - Header - All Values
+
+<cb>@RequestHeader Map\<String, String> <v>headers<><>
+
+Full:
+
+<cb>import org.springframework.web.bind.annotation.RequestHeader;
+
+public ResponseEntity\<<v>...<>> <v>request<>(@RequestHeader Map\<String, String> <v>headers<>) {
+    <v>...<>
+}<>
+
+
+Returns all header values.
+@
+@ @RequestHeader, org.springframework.web.bind.annotation.RequestHeader
+@ input, get, headers
+
+
+
 ### Controller Request - Path Parameter
 
 <cb>@PathVariable <v>T<> <v>name<>
 
 \@PathVariable("<v>path_name<>") <v>T<> <v>name<><>
 
+From URL:
+
+<cb>http://.../<v>name<>/...<>
+
 Full Method:
 
 <cb>org.springframework.web.bind.annotation.PathVariable
 
 \@<v>GetMapping<>("{<v>name<>}")
-public ResponseEntity\<<v>...<>> <v>requestMethod<>(@PathVariable <v>T<> <v>name<>) {	<#>// #1<>
+public ResponseEntity\<<v>...<>> <v>request<>(@PathVariable <v>T<> <v>name<>) {	<#>// #1<>
 	<v>...<>
 }<>
 
@@ -980,7 +1027,7 @@ Explicitly Named Parameter:
 <cb>org.springframework.web.bind.annotation.PathVariable
 
 \@<v>GetMapping<>("{<v>path_name<>}")
-public ResponseEntity\<<v>...<>> <v>requestMethod<>(@PathVariable("<v>path_name<>") <v>T<> <v>name<>) {	<#>// #1<>
+public ResponseEntity\<<v>...<>> <v>request<>(@PathVariable("<v>path_name<>") <v>T<> <v>name<>) {	<#>// #1<>
 	<v>...<>
 }<>
 
@@ -997,15 +1044,19 @@ Passes the value in to the variable of the same name.
 
 ### Controller Request - Url Parameter
 
-<cb>@RequestParam <v>Type<> <v>name<><>
+<cb>@RequestParam <v>T<> <v>name<>
 
-URL:
+\@RequestParam(name = "<v>param_name<>") <v>T<> <v>name<><>
 
-<cb><v>...<>/<v>path<>&<v>name<>=<v>value<><>
+From URL:
+
+<cb>http://...&<v>name<>=<v>value<><>
 
 Full Method:
 
-<cb>public ResponseEntity\<<v>...<>> <v>requestMethod<>(@RequestParam <v>Type<> <v>name<>) {	<#>// #1<>
+<cb>import org.springframework.web.bind.annotation.RequestParam;
+
+public ResponseEntity\<<v>...<>> <v>request<>(@RequestParam <v>Type<> <v>name<>) {	<#>// #1<>
 	<v>...<>
 }<>
 
@@ -1030,6 +1081,30 @@ Import:
 @
 @ input, get
 @ @RequestParam, org.springframework.web.bind.annotation.RequestParam
+
+
+
+### Controller Response - Headers - Set
+
+<cb>HttpHeaders <v>headers<> = new HttpHeaders();
+headers.set("<v>name<>", "<v>value<>");
+
+<v>response<>.setHeaders(<v>headers<>);<>
+
+Usage:
+
+<cb>import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
+
+public ResponseEntity<String> <v>request<>() {
+
+    HttpHeaders headers = new HttpHeaders();
+    headers.set("<v>name<>", "<v>value<>");
+
+    ResponseEntity <v>response<> = ResponseEntity().ok().body(<v>...<>);
+    <v>response<>.headers(<v>headers<>);
+    return <v>response<>;
+}<>
 
 
 
@@ -1201,8 +1276,6 @@ Place before setter method.
 Works for marshalling and unmarshalling.
 @
 @ Set
-
-
 
 
 
