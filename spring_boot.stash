@@ -1044,43 +1044,70 @@ Passes the value in to the variable of the same name.
 
 ### Controller Request - Url Parameter
 
-<cb>@RequestParam <v>T<> <v>name<>
+<cb>@RequestParam <v>Type<> <v>name<><>
 
-\@RequestParam(name = "<v>param_name<>") <v>T<> <v>name<><>
-
-From URL:
-
-<cb>http://...&<v>name<>=<v>value<><>
-
-Full Method:
+Usage:
 
 <cb>import org.springframework.web.bind.annotation.RequestParam;
 
-public ResponseEntity\<<v>...<>> <v>request<>(@RequestParam <v>Type<> <v>name<>) {	<#>// #1<>
-	<v>...<>
+public ResponseEntity\<<v>...<>> <v>requestMethod<>(@RequestParam <v>Type<> <v>name<>) {
+    <v>...<>
 }<>
 
-Named Parameter:
+For URL:
 
-<cb>@RequestParam(name = "<v>param_name<>") <v>Type<> <v>param1<><>
-
-Multiple Parameters:
-
-<cb>public ResponseEntity\<<v>...<>> <v>requestMethod<>(@RequestParam <v>String<> <v>param1<>, @RequestParam <v>int<> <v>param2<>, <v>...<>) {
-	<v>...<>
-}<>
-
-Import:
-
-<cb>import org.springframework.web.bind.annotation.RequestParam;<>
+<cb>http://site.com/page&<v>name<>=<v>value<><>
 
 
-\#1  <s>-<>  Sets the variable to the url parameter of the same name.
+Returns the request parameter.
 
-\#2  <s>-<>  Use <c>name = <> to target a url parameter that has a different name to the variable.
+The parameter name is taken from the variable name. They must be the same.
+See: <link# "Controller Request - Url Parameter - Named Parameter">Named Parameter<> for non-matching names.
 @
 @ input, get
-@ @RequestParam, org.springframework.web.bind.annotation.RequestParam
+@ @RequestParam, RequestParam, org.springframework.web.bind.annotation.RequestParam
+
+
+
+### Controller Request - Url Parameter - Named Parameter
+
+<cb>\@RequestParam(name = "<v>param_name<>") <v>T<> <v>name<><>
+
+Usage:
+
+<cb>import org.springframework.web.bind.annotation.RequestParam;
+
+public ResponseEntity\<<v>...<>> <v>request<>(@RequestParam(name = "<v>param_name<>") <v>Type<> <v>name<>) {
+    <v>...<>
+}<>
+
+For URL:
+
+<cb>http://site.com/page&<v>param_name<>=<v>value<><>
+
+
+Returns request parameter to a variable where the parameter and variable names are different.
+@ input, get
+@ \@RequestParam, RequestParam, org.springframework.web.bind.annotation.RequestParam
+@ name=, mismatched name, non-matching
+
+
+
+### Controller Request - Url Parameter - Optional
+
+<cb>\@RequestParam(required = false) <v>T<> <v>name<><>
+
+Usage:
+
+<cb>import org.springframework.web.bind.annotation.RequestParam;
+
+public ResponseEntity\<<v>...<>> <v>request<>(@RequestParam(request = false) <v>Type<> <v>name<>) {
+    <v>...<>
+}<>
+@
+@ input, get
+@ \@RequestParam, org.springframework.web.bind.annotation.RequestParam
+@ not required, required=false
 
 
 
@@ -1286,7 +1313,10 @@ Works for marshalling and unmarshalling.
 
 ### Logging - Default Library
 
-<cb>log4j<>
+<cb>logback<>
+
+
+Logback is the default logger but is managed using SLF4J APIs.
 
 
 
@@ -1467,8 +1497,220 @@ Import:
 # Entities
 
 
+## Entity - Convert - Database Conversion
 
-## Marshal / Unmashal
+
+
+### Entity - Database - Attribute Type Converter
+
+<cb><#>//Attribute:<>
+
+\@convert(converter = <v>TypeConverter<>)
+private <v>Type<> <v>attribute1<>;
+
+
+<#>//Converter:<>
+
+public class <v>TypeConverter<> implements AttributeConverter\<<v>AttributeType<>, String> {
+
+    public String convertToDatabaseColumn (<v>Type<> value) {<v>...<>}
+    public <v>Type<> convertToEntityAttribute (String value) {<v>...<>}
+}<>
+
+Usage:
+
+<cb><#>// Entity Attribute:<>
+
+import javax.persistence.Convert:
+
+class <v>Entity1<> {
+
+    \@convert(converter = <v>TypeConverter<>)
+    private <v>Type<> <v>attribute1<>;
+}<>
+
+<cb><#>// Converter:<>
+
+import javax.persistence.AttributeConverter;
+import javax.persistence.Converter;
+
+\@Converter(autoApply = true)
+public class <v>TypeConverter<> implements AttributeConverter<ActionType, String> {
+
+    \@Override
+    public String convertToDatabaseColumn (<v>Type<> value) {
+        return <v>...<>;
+    }
+
+    \@Override
+    public <v>Type<> convertToEntityAttribute (String value) {
+        return <v>...<>;
+    }
+}<>
+
+
+Converts a class attribute to and from a string.
+
+Used by the persistence framework to correctly convert data stored in a database.
+Implement a converter by using <c>AttributeConverter<> and implementing it's 2 methods.
+Then annotate the attribute with <c>@convert()<>
+@
+@ javax.persistence.Convert, convert(), converter=
+@ javax.persistence.AttributeConverter, AttributeConverter\<>
+@ convertToDatabaseColumn(), convertToEntityAttribute()
+@ table, annotation
+@ property, properties, field, fields, attribute, attributes
+
+
+
+## Entity - Convert - JSON Conversion
+
+
+
+### Entity - JSON - Unmarshal From JSON
+
+<cb>@JsonCreator<>
+
+Usage:
+
+<cb>import com.fasterxml.jackson.annotation.JsonCreator;
+
+\@JsonCreator
+public static \<<v>Type<>> <v>fromJson<>(String <v>json<>) {
+    return <v>...<>;
+}<>
+
+
+Converts a property string into its internal representation.
+
+Typically used by the controller to convert incoming data.
+Annotate the conversion method.
+@
+@ JsonCreator, \@JsonCreator, com.fasterxml.jackson.annotation.JsonCreator
+@ convert, converting, conversion, string, controller, type
+
+
+
+### Entity - JSON Attribute - Marshal To JSON
+
+<cb>@JsonValue<>
+
+Usage:
+
+<cb>import com.fasterxml.jackson.annotation.JsonValue;
+
+\@JsonValue
+public String <v>toProperytString<>() {
+    return <v>...<>;
+}<>
+
+
+Converts a value into it string / JSON form.
+
+Typically used to return data to calling services.
+Annotate the conversion method.
+@
+@ JsonValue, \@JsonValue, com.fasterxml.jackson.annotation.JsonValue
+@ convert, converting, conversion, to string, controller
+@ property, properties, field, fields, attribute, attributes
+
+
+
+## Entity - Convert - String Conversion
+@ 
+@ conversion, converting, to, from
+
+
+
+### Entity - Convert String to Entity
+
+<cb>public class <v>StringToEntityConverter<> implements Converter\<String, <v>Entity<>> {
+    public <v>Entity<> convert(String <v>value<>) {<v>...<>}
+}<>
+
+Usage:
+
+<cb>import org.springframework.core.convert.converter.Converter;
+
+public class <v>StringToEntityConverter<> implements Converter\<String, <v>Entity<>> {
+
+    \@Override
+    public <v>Entity<> convert(String <v>value<>) {
+        return <v>...<>;
+    }
+}<>
+
+Register Converter:
+
+<cb>import org.springframework.context.annotation.Configuration;
+import org.springframework.format.FormatterRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
+\@Configuration
+public class <v>ConverterConfiguration<> implements WebMvcConfigurer{
+    
+    \@Override
+    public void addFormatters(FormatterRegistry registry) {
+        
+        registry.addConverter(new <v>StringToEntityConverter<>());
+    }
+}<>
+
+
+Converts a string into an entity.
+
+Create your conversion class by overriding <c>Convert<>.
+Typically used by controllers to convert incoming requests.
+@
+@ converter\<>, com.fasterxml.jackson.databind.util.Converter
+@ convert(), enum
+
+
+
+### Entity - Convert Entity to String
+
+<mark>Untested<>
+
+<cb>public class <v>EntityToStringConverter<> implements Converter\<<v>Entity<>, String> {
+    public String convert(<v>Entity<> <v>value<>) {<v>...<>}
+}<>
+
+Usage:
+
+<cb>import org.springframework.core.convert.converter.Converter;
+
+public class <v>EntityToStringConverter<> implements Converter\<<v>Entity<>, String> {
+
+    \@Override
+    public String convert(<v>Entity<> <v>value<>) {
+        return <v>...<>;
+    }
+}<>
+
+Register Converter:
+
+<cb>import org.springframework.context.annotation.Configuration;
+import org.springframework.format.FormatterRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
+\@Configuration
+public class <v>ConverterConfiguration<> implements WebMvcConfigurer{
+    
+    \@Override
+    public void addFormatters(FormatterRegistry registry) {
+        
+        registry.addConverter(new <v>EntityToStringConverter<>());
+    }
+}<>
+
+
+Converts an entity into a string
+
+Create your conversion class by overriding <c>Convert<>.
+Typically used by controllers to return results.
+@
+@ converter\<>, com.fasterxml.jackson.databind.util.Converter
+@ convert(), enum
 
 
 
@@ -2132,25 +2374,59 @@ On: Class
 
 
 
-# Appendix - Gradle
+# Reference - Gradle
 
 
 
-# Appendix - Configuration Settings
+# Reference - Configuration Settings
 @
 @ Properties, application.properties, Set
+
+
+
+### Server - Compress Responses
+
+<cb>server.compression.enabled=true
+server.compression.min-response-size=1<>
+
+
+Enables server side compression.
+Responses are compressed with gzip
+
+
+<c>server.compression.enabled<>:
+Enables compression.
+
+<c>server.compression.min-response-size<>:
+Sets the minimum size before compressing the reply.
+
+
+Content Types That Are Compressed:
+
+<cb>text/css
+text/html
+text/json
+text/plain<>
+@
+@ server.compression.enabled, compression.enabled
+@ server.compression.min-response-size, compression.min-response-size, min-response-size
+@ enable, gzip, compression
 
 
 
 ### Server - Port
 
 <cb>server.port = <v>port_number<><>
+@
+@ server.port
+
 
 
 ### Sql - Log
 
 <cb>spring.jpa.show-sql = true<>
 @
+@ spring.jpa.show-sql, jpa.show-sql, show-sql
 @ Show, Display, Print
 
 
@@ -2274,7 +2550,6 @@ Extends: CrudRepository, PagingAndSortingRepository.
 ### Repository - RepositoryPagingAndSortingRepository
 Provides methods to do pagination and sorting records.
 Extends: CrudRepository
-
 
 
 
