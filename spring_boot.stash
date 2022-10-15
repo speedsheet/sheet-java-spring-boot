@@ -9,6 +9,17 @@
 
 
 
+# Docs
+
+
+### Spring Initializr
+
+<l>https://start.spring.io/<>
+@
+@ create new application online, initializer
+
+
+
 # Summary
 
 
@@ -214,6 +225,8 @@ Set from the command line.
 
 
 # Configuration Profiles
+@
+@ settings
 
 
 
@@ -337,7 +350,7 @@ Example:
 
 # Configuration Properties
 @
-@ Settings
+@ Settings, set, configure, inject
 
 
 
@@ -347,8 +360,12 @@ Example:
 private Environment <v>environment<>;
 
 String <v>propertyValue1<> = <v>environment<>.getProperty("<v>property-name<>");<>
+
+Import:
+
+<cb>javax.inject.Inject<>
 @
-@ Programmatically
+@ Programmatically, @inject
 
 
 
@@ -373,7 +390,7 @@ Default:
 	<v>...<>
 }<>
 @
-@ get
+@ get, @value(), org.springframework.beans.factory.annotation.Value
 
 
 
@@ -400,7 +417,7 @@ Default:
 	String <v>property1<>
 }<>
 @
-@ get
+@ get, \@value, org.springframework.beans.factory.annotation.Value
 
 
 
@@ -447,6 +464,7 @@ String:
 2.  -  Quotes are not needed
 @
 @ get, with
+@ \@value, org.springframework.beans.factory.annotation.Value
 
 
 ### Property - Read - Default Value - Boolean
@@ -467,6 +485,7 @@ Import:
 }<>
 @
 @ get, with
+@ \@value, org.springframework.beans.factory.annotation.Value
 
 
 ### Property - Read - Default Value - Integer
@@ -483,6 +502,7 @@ Import:
 }<>
 @
 @ get, with
+@ \@value, org.springframework.beans.factory.annotation.Value
 
 
 
@@ -499,11 +519,9 @@ ServletContext <v>servletContext<>;
 
 
 
-
 # Component Configuration
 @
-@ Beans, Components
-
+@ Beans, Components, configure
 
 
 ## Autowire / Inject
@@ -595,7 +613,6 @@ public class <v>UserApiController<> {
 # Controller
 @
 @ cont-only, controller-only, controllers-only
-
 
 
 ### Controller - Web Controller - Define
